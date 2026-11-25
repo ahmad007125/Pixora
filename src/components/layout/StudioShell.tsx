@@ -60,50 +60,52 @@ export function StudioShell({
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#F8FAFD] text-[#202124] dark:bg-[#0F141C] dark:text-[#F1F3F4] lg:flex-row">
+    <div className="flex flex-col bg-[#F8FAFD] text-[#202124] dark:bg-[#0F141C] dark:text-[#F1F3F4] lg:flex-row overflow-y-hidden h-dvh">
       {/* Desktop Left Sidebar */}
-      <aside className="hidden lg:flex lg:w-60 lg:shrink-0 lg:flex-col lg:border-r lg:border-[#DADCE0] lg:bg-white dark:lg:border-[#2B3340] dark:lg:bg-[#171E29]">
-        <div className="flex h-16 items-center gap-3 border-b border-[#DADCE0] px-5 dark:border-[#2B3340]">
-          <button
-            type="button"
-            onClick={() => handleNavClick('home')}
-            className="flex items-center gap-2.5 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4285F4]"
-          >
-            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#4285F4] text-white shadow-xs">
-              <Aperture className="h-4.5 w-4.5" />
-            </span>
-            <span className="font-display text-lg font-bold tracking-tight text-[#202124] dark:text-[#F1F3F4] whitespace-nowrap">
-              PIXORA
-            </span>
-          </button>
-        </div>
+      <aside className="hidden lg:flex justify-between lg:w-60 lg:shrink-0 lg:flex-col lg:border-r lg:border-[#DADCE0] lg:bg-white dark:lg:border-[#2B3340] dark:lg:bg-[#171E29]">
+        <div className="">
+          <div className="flex h-16 items-center gap-3 border-b border-[#DADCE0] px-5 dark:border-[#2B3340]">
+            <button
+              type="button"
+              onClick={() => handleNavClick('home')}
+              className="flex items-center gap-2.5 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4285F4]"
+            >
+              <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#4285F4] text-white shadow-xs">
+                <Aperture className="h-4.5 w-4.5" />
+              </span>
+              <span className="font-display text-lg font-bold tracking-tight text-[#202124] dark:text-[#F1F3F4] whitespace-nowrap">
+                PIXORA
+              </span>
+            </button>
+          </div>
 
-        <nav className="flex-1 space-y-1 p-3" aria-label="Primary navigation">
-          {STUDIO_NAV_ITEMS.map((item) => {
-            const Icon = item.icon;
-            const active = activeView === item.id;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => handleNavClick(item.id)}
-                className={`flex min-h-10 w-full items-center justify-between gap-3 rounded-xl px-3.5 py-2 text-sm font-medium transition-colors whitespace-nowrap ${
-                  active
-                    ? 'bg-[#E8F0FE] text-[#1A73E8] dark:bg-[#4285F4]/18 dark:text-[#8AB4F8]'
-                    : 'text-[#5F6368] hover:bg-[#F1F3F4] hover:text-[#202124] dark:text-[#9AA0A6] dark:hover:bg-[#1F2735] dark:hover:text-[#F1F3F4]'
-                }`}
-              >
-                <span className="flex items-center gap-3 truncate">
-                  <Icon className="h-4 w-4 shrink-0" />
-                  <span className="truncate">{item.label}</span>
-                </span>
-                {item.id === 'projects' && projectCount > 0 && (
-                  <span className="font-mono-num text-xs opacity-75">{projectCount}</span>
-                )}
-              </button>
-            );
-          })}
-        </nav>
+          <nav className="space-y-1 p-3" aria-label="Primary navigation">
+            {STUDIO_NAV_ITEMS.map((item) => {
+              const Icon = item.icon;
+              const active = activeView === item.id;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => handleNavClick(item.id)}
+                  className={`flex min-h-10 w-full items-center justify-between gap-3 rounded-xl px-3.5 py-2 text-sm font-medium transition-colors whitespace-nowrap ${
+                    active
+                      ? 'bg-[#E8F0FE] text-[#1A73E8] dark:bg-[#4285F4]/18 dark:text-[#8AB4F8]'
+                      : 'text-[#5F6368] hover:bg-[#F1F3F4] hover:text-[#202124] dark:text-[#9AA0A6] dark:hover:bg-[#1F2735] dark:hover:text-[#F1F3F4]'
+                  }`}
+                >
+                  <span className="flex items-center gap-3 truncate">
+                    <Icon className="h-4 w-4 shrink-0" />
+                    <span className="truncate">{item.label}</span>
+                  </span>
+                  {item.id === 'projects' && projectCount > 0 && (
+                    <span className="font-mono-num text-xs opacity-75">{projectCount}</span>
+                  )}
+                </button>
+              );
+            })}
+          </nav>
+        </div>
 
         <div className="border-t border-[#DADCE0] p-3 dark:border-[#2B3340]">
           <button
@@ -206,7 +208,7 @@ export function StudioShell({
       )}
 
       {/* Main Content Area */}
-      <main className="flex min-w-0 flex-1 flex-col pb-16 lg:pb-0">{children}</main>
+      <main className="flex min-w-0 flex-1 flex-col pb-16 lg:pb-0 overflow-y-auto studio-scroll">{children}</main>
 
       {/* Mobile Compact Bottom Navigation (<= 10% viewport height) */}
       <nav
