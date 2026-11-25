@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useMemo, useState } from 'react';
 import { Check, Moon, ShieldCheck, Sun, Trash2 } from 'lucide-react';
 import { detectSupportedExportFormats } from '../../lib/file-handling/imageLoader';

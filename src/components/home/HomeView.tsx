@@ -1,4 +1,7 @@
+'use client';
+
 import React from 'react';
+import Link from 'next/link';
 import {
   Aperture,
   ArrowRight,
@@ -9,6 +12,7 @@ import {
   Minimize2,
   SlidersHorizontal,
 } from 'lucide-react';
+import { VIEW_PATHS } from '../../lib/navigation';
 import { formatRelativeDate } from '../../lib/utilities/format';
 import { SAMPLE_PHOTOS, SamplePhotoItem } from '../../lib/utilities/samples';
 import { PixoraProject, StudioView } from '../../types/project';
@@ -22,7 +26,6 @@ interface HomeViewProps {
   uploadWarning: string | null;
   onFilesUploaded: (files: FileList) => void;
   onSamplePicked: (sample: SamplePhotoItem) => void;
-  onNavigate: (view: StudioView) => void;
   onOpenProject: (project: PixoraProject) => void;
 }
 
@@ -90,6 +93,7 @@ const TOOL_LABELS: Record<StudioView, string> = {
   filters: 'Cinematic Filters',
   'background-remover': 'Background Remover',
   compressor: 'Image Compressor',
+  blog: 'Blog',
   projects: 'My Projects',
   settings: 'Settings',
 };
@@ -102,7 +106,6 @@ export function HomeView({
   uploadWarning,
   onFilesUploaded,
   onSamplePicked,
-  onNavigate,
   onOpenProject,
 }: HomeViewProps) {
   return (
@@ -134,15 +137,14 @@ export function HomeView({
               <span>Recently used:</span>
             </span>
             {recentTools.map((toolId) => (
-              <button
+              <Link
                 key={toolId}
-                type="button"
-                onClick={() => onNavigate(toolId)}
+                href={VIEW_PATHS[toolId]}
                 className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-[#DADCE0] bg-white px-3 py-1.5 text-xs font-medium text-[#202124] transition-colors hover:border-[#4285F4] hover:text-[#1A73E8] whitespace-nowrap shrink-0 dark:border-[#2B3340] dark:bg-[#171E29] dark:text-[#F1F3F4] dark:hover:border-[#8AB4F8] dark:hover:text-[#8AB4F8]"
               >
                 <span>{TOOL_LABELS[toolId]}</span>
                 <ArrowRight className="h-3 w-3 opacity-60" />
-              </button>
+              </Link>
             ))}
           </div>
         )}
@@ -177,10 +179,9 @@ export function HomeView({
           {FEATURE_CARDS.map((card) => {
             const Icon = card.icon;
             return (
-              <button
+              <Link
                 key={card.id}
-                type="button"
-                onClick={() => onNavigate(card.id)}
+                href={VIEW_PATHS[card.id]}
                 className="group flex flex-col overflow-hidden rounded-2xl border border-[#DADCE0] bg-white text-left transition-all hover:border-[#4285F4] hover:shadow-md dark:border-[#2B3340] dark:bg-[#171E29] dark:hover:border-[#8AB4F8]"
               >
                 <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#F1F3F4] dark:bg-[#232B38]">
@@ -208,7 +209,7 @@ export function HomeView({
                     <span className="font-medium text-[#1A73E8] dark:text-[#8AB4F8]">Open</span>
                   </div>
                 </div>
-              </button>
+              </Link>
             );
           })}
         </div>
@@ -226,13 +227,12 @@ export function HomeView({
             </p>
           </div>
           {recentProjects.length > 0 && (
-            <button
-              type="button"
-              onClick={() => onNavigate('projects')}
+            <Link
+              href={VIEW_PATHS.projects}
               className="text-sm font-medium text-[#1A73E8] hover:underline whitespace-nowrap shrink-0 dark:text-[#8AB4F8]"
             >
               View all projects
-            </button>
+            </Link>
           )}
         </div>
 

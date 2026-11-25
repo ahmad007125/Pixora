@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useRef, useState } from 'react';
 import { FolderOpen, ImagePlus, UploadCloud } from 'lucide-react';
 import { ACCEPTED_EXTENSIONS } from '../../lib/file-handling/imageLoader';

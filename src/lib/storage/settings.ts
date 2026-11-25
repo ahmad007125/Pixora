@@ -4,6 +4,7 @@ const SETTINGS_STORAGE_KEY = 'pixora_user_settings_v1';
 
 export function loadUserSettings(): UserSettings {
   try {
+    if (typeof window === 'undefined') return DEFAULT_USER_SETTINGS;
     const raw = localStorage.getItem(SETTINGS_STORAGE_KEY);
     if (!raw) return DEFAULT_USER_SETTINGS;
     const parsed = JSON.parse(raw) as Partial<UserSettings>;
@@ -28,7 +29,9 @@ export function saveUserSettings(settings: UserSettings): void {
 }
 
 export function recordRecentTool(current: UserSettings, view: StudioView): UserSettings {
-  if (view === 'home' || view === 'projects' || view === 'settings') return current;
+  if (view === 'home' || view === 'projects' || view === 'settings' || view === 'blog') {
+    return current;
+  }
   const filtered = current.recentTools.filter((item) => item !== view);
   const next: UserSettings = {
     ...current,

@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 import {
   Aperture,
   Eraser,
@@ -8,11 +11,13 @@ import {
   Menu,
   Minimize2,
   Moon,
+  Newspaper,
   Settings,
   SlidersHorizontal,
   Sun,
   X,
 } from 'lucide-react';
+import { VIEW_PATHS } from '../../lib/navigation';
 import { StudioView } from '../../types/project';
 
 export interface NavItem {
@@ -29,6 +34,7 @@ export const STUDIO_NAV_ITEMS: NavItem[] = [
   { id: 'filters', label: 'Cinematic Filters', shortLabel: 'Filters', icon: Aperture },
   { id: 'background-remover', label: 'Background Remover', shortLabel: 'Cutout', icon: Eraser },
   { id: 'compressor', label: 'Image Compressor', shortLabel: 'Compress', icon: Minimize2 },
+  { id: 'blog', label: 'Blog', shortLabel: 'Blog', icon: Newspaper },
   { id: 'projects', label: 'My Projects', shortLabel: 'Projects', icon: FolderKanban },
   { id: 'settings', label: 'Settings', shortLabel: 'Settings', icon: Settings },
 ];
@@ -37,37 +43,44 @@ interface StudioShellProps {
   activeView: StudioView;
   theme: 'light' | 'dark';
   projectCount: number;
-  onNavigate: (view: StudioView) => void;
   onToggleTheme: () => void;
   children: React.ReactNode;
+}
+
+function navClassName(active: boolean, compact = false): string {
+  const base = compact
+    ? 'flex min-h-11 w-full items-center justify-between gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium'
+    : 'flex min-h-10 w-full items-center justify-between gap-3 rounded-xl px-3.5 py-2 text-sm font-medium transition-colors whitespace-nowrap';
+  return `${base} ${
+    active
+      ? 'bg-[#E8F0FE] text-[#1A73E8] dark:bg-[#4285F4]/18 dark:text-[#8AB4F8]'
+      : compact
+        ? 'text-[#5F6368] hover:bg-[#F1F3F4] dark:text-[#9AA0A6] dark:hover:bg-[#1F2735]'
+        : 'text-[#5F6368] hover:bg-[#F1F3F4] hover:text-[#202124] dark:text-[#9AA0A6] dark:hover:bg-[#1F2735] dark:hover:text-[#F1F3F4]'
+  }`;
 }
 
 export function StudioShell({
   activeView,
   theme,
   projectCount,
-  onNavigate,
   onToggleTheme,
   children,
 }: StudioShellProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   const activeMeta = STUDIO_NAV_ITEMS.find((i) => i.id === activeView) ?? STUDIO_NAV_ITEMS[0];
 
-  const handleNavClick = (view: StudioView) => {
-    onNavigate(view);
+  useEffect(() => {
     setMobileMenuOpen(false);
-  };
+  }, [activeView]);
 
   return (
     <div className="flex flex-col bg-[#F8FAFD] text-[#202124] dark:bg-[#0F141C] dark:text-[#F1F3F4] lg:flex-row overflow-y-hidden h-dvh">
-      {/* Desktop Left Sidebar */}
       <aside className="hidden lg:flex justify-between lg:w-60 lg:shrink-0 lg:flex-col lg:border-r lg:border-[#DADCE0] lg:bg-white dark:lg:border-[#2B3340] dark:lg:bg-[#171E29]">
         <div className="">
           <div className="flex h-16 items-center gap-3 border-b border-[#DADCE0] px-5 dark:border-[#2B3340]">
-            <button
-              type="button"
-              onClick={() => handleNavClick('home')}
+            <Link
+              href="/"
               className="flex items-center gap-2.5 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4285F4]"
             >
               <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#4285F4] text-white shadow-xs">
@@ -76,7 +89,7 @@ export function StudioShell({
               <span className="font-display text-lg font-bold tracking-tight text-[#202124] dark:text-[#F1F3F4] whitespace-nowrap">
                 PIXORA
               </span>
-            </button>
+            </Link>
           </div>
 
           <nav className="space-y-1 p-3" aria-label="Primary navigation">
@@ -84,15 +97,11 @@ export function StudioShell({
               const Icon = item.icon;
               const active = activeView === item.id;
               return (
-                <button
+                <Link
                   key={item.id}
-                  type="button"
-                  onClick={() => handleNavClick(item.id)}
-                  className={`flex min-h-10 w-full items-center justify-between gap-3 rounded-xl px-3.5 py-2 text-sm font-medium transition-colors whitespace-nowrap ${
-                    active
-                      ? 'bg-[#E8F0FE] text-[#1A73E8] dark:bg-[#4285F4]/18 dark:text-[#8AB4F8]'
-                      : 'text-[#5F6368] hover:bg-[#F1F3F4] hover:text-[#202124] dark:text-[#9AA0A6] dark:hover:bg-[#1F2735] dark:hover:text-[#F1F3F4]'
-                  }`}
+                  href={VIEW_PATHS[item.id]}
+                  aria-current={active ? 'page' : undefined}
+                  className={navClassName(active)}
                 >
                   <span className="flex items-center gap-3 truncate">
                     <Icon className="h-4 w-4 shrink-0" />
@@ -101,7 +110,7 @@ export function StudioShell({
                   {item.id === 'projects' && projectCount > 0 && (
                     <span className="font-mono-num text-xs opacity-75">{projectCount}</span>
                   )}
-                </button>
+                </Link>
               );
             })}
           </nav>
@@ -121,7 +130,6 @@ export function StudioShell({
         </div>
       </aside>
 
-      {/* Mobile / Tablet Compact Header */}
       <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-[#DADCE0] bg-white/95 px-4 backdrop-blur-sm dark:border-[#2B3340] dark:bg-[#171E29]/95 lg:hidden">
         <div className="flex items-center gap-2.5">
           <button
@@ -132,18 +140,14 @@ export function StudioShell({
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
-          <button
-            type="button"
-            onClick={() => handleNavClick('home')}
-            className="flex items-center gap-2"
-          >
+          <Link href="/" className="flex items-center gap-2">
             <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#4285F4] text-white">
               <Aperture className="h-4 w-4" />
             </span>
             <span className="font-display text-base font-bold tracking-tight whitespace-nowrap">
               PIXORA
             </span>
-          </button>
+          </Link>
           <span className="text-xs text-[#5F6368] dark:text-[#9AA0A6]">· {activeMeta.label}</span>
         </div>
 
@@ -157,7 +161,6 @@ export function StudioShell({
         </button>
       </header>
 
-      {/* Mobile Slide-Out Drawer */}
       {mobileMenuOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/40 lg:hidden"
@@ -183,15 +186,11 @@ export function StudioShell({
               const Icon = item.icon;
               const active = activeView === item.id;
               return (
-                <button
+                <Link
                   key={item.id}
-                  type="button"
-                  onClick={() => handleNavClick(item.id)}
-                  className={`flex min-h-11 w-full items-center justify-between gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium ${
-                    active
-                      ? 'bg-[#E8F0FE] text-[#1A73E8] dark:bg-[#4285F4]/18 dark:text-[#8AB4F8]'
-                      : 'text-[#5F6368] hover:bg-[#F1F3F4] dark:text-[#9AA0A6] dark:hover:bg-[#1F2735]'
-                  }`}
+                  href={VIEW_PATHS[item.id]}
+                  aria-current={active ? 'page' : undefined}
+                  className={navClassName(active, true)}
                 >
                   <span className="flex items-center gap-3">
                     <Icon className="h-4.5 w-4.5" />
@@ -200,17 +199,17 @@ export function StudioShell({
                   {item.id === 'projects' && projectCount > 0 && (
                     <span className="font-mono-num text-xs opacity-75">{projectCount}</span>
                   )}
-                </button>
+                </Link>
               );
             })}
           </nav>
         </div>
       )}
 
-      {/* Main Content Area */}
-      <main className="flex min-w-0 flex-1 flex-col pb-16 lg:pb-0 overflow-y-auto studio-scroll">{children}</main>
+      <main className="flex min-w-0 flex-1 flex-col pb-16 lg:pb-0 overflow-y-auto studio-scroll">
+        {children}
+      </main>
 
-      {/* Mobile Compact Bottom Navigation (<= 10% viewport height) */}
       <nav
         aria-label="Quick studio tools"
         className="fixed inset-x-0 bottom-0 z-30 grid h-14 grid-cols-5 border-t border-[#DADCE0] bg-white/95 backdrop-blur-sm dark:border-[#2B3340] dark:bg-[#171E29]/95 lg:hidden"
@@ -219,19 +218,17 @@ export function StudioShell({
           const Icon = item.icon;
           const active = activeView === item.id;
           return (
-            <button
+            <Link
               key={item.id}
-              type="button"
-              onClick={() => handleNavClick(item.id)}
+              href={VIEW_PATHS[item.id]}
+              aria-current={active ? 'page' : undefined}
               className={`flex flex-col items-center justify-center gap-0.5 text-[11px] font-medium ${
-                active
-                  ? 'text-[#1A73E8] dark:text-[#8AB4F8]'
-                  : 'text-[#5F6368] dark:text-[#9AA0A6]'
+                active ? 'text-[#1A73E8] dark:text-[#8AB4F8]' : 'text-[#5F6368] dark:text-[#9AA0A6]'
               }`}
             >
               <Icon className="h-4.5 w-4.5" />
               <span className="truncate">{item.shortLabel}</span>
-            </button>
+            </Link>
           );
         })}
       </nav>

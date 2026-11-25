@@ -1,3 +1,5 @@
+'use client';
+
 import { useMemo, useState } from 'react';
 import { Download, X } from 'lucide-react';
 import { detectSupportedExportFormats } from '../../lib/file-handling/imageLoader';

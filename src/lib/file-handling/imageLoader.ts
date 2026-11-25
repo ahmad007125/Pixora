@@ -31,6 +31,9 @@ let cachedFormatSupport: FormatSupportInfo | null = null;
 
 export function detectSupportedExportFormats(): FormatSupportInfo {
   if (cachedFormatSupport) return cachedFormatSupport;
+  if (typeof document === 'undefined') {
+    return { png: true, jpeg: true, webp: true, avif: false };
+  }
   const canvas = document.createElement('canvas');
   canvas.width = 2;
   canvas.height = 2;

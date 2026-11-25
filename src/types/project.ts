@@ -9,6 +9,7 @@ export type StudioView =
   | 'filters'
   | 'background-remover'
   | 'compressor'
+  | 'blog'
   | 'projects'
   | 'settings';
 
