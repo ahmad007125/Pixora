@@ -109,7 +109,7 @@ export function HomeView({
   onOpenProject,
 }: HomeViewProps) {
   return (
-    <div className="mx-auto w-full max-w-[1200px] px-4 py-8 sm:px-8 sm:py-10">
+    <div className="w-full max-w-[1300px] px-4 py-8 sm:pl-12 sm:pr-8 sm:py-12">
       {/* Hero Header & Upload Zone */}
       <section className="space-y-6">
         <div className="max-w-2xl space-y-2.5">
