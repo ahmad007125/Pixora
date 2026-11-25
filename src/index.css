@@ -1,0 +1,133 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --pixora-blue: #4285F4;
+    --pixora-blue-hover: #1A73E8;
+    --pixora-blue-soft: #E8F0FE;
+    --pixora-bg: #F8FAFD;
+    --pixora-surface: #FFFFFF;
+    --pixora-text: #202124;
+    --pixora-text-muted: #5F6368;
+    --pixora-border: #DADCE0;
+    --pixora-yellow: #FBBC04;
+    --pixora-green: #34A853;
+    --pixora-red: #EA4335;
+  }
+
+  .dark {
+    --pixora-blue: #8AB4F8;
+    --pixora-blue-hover: #669DF6;
+    --pixora-blue-soft: rgba(66, 133, 244, 0.16);
+    --pixora-bg: #0F141C;
+    --pixora-surface: #171E29;
+    --pixora-text: #F1F3F4;
+    --pixora-text-muted: #9AA0A6;
+    --pixora-border: #2B3340;
+  }
+
+  html {
+    font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: "Plus Jakarta Sans", "DM Sans", sans-serif;
+  }
+
+  .font-mono-num {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Transparency checkerboard for cutouts & transparent previews */
+.checkerboard-bg {
+  background-color: #ffffff;
+  background-image:
+    linear-gradient(45deg, #e8eaed 25%, transparent 25%),
+    linear-gradient(-45deg, #e8eaed 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #e8eaed 75%),
+    linear-gradient(-45deg, transparent 75%, #e8eaed 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+}
+
+.dark .checkerboard-bg {
+  background-color: #161c26;
+  background-image:
+    linear-gradient(45deg, #222a38 25%, transparent 25%),
+    linear-gradient(-45deg, #222a38 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #222a38 75%),
+    linear-gradient(-45deg, transparent 75%, #222a38 75%);
+}
+
+/* Precision studio range sliders */
+input[type="range"].studio-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 9999px;
+  background: #DADCE0;
+  outline: none;
+}
+
+.dark input[type="range"].studio-slider {
+  background: #2D3542;
+}
+
+input[type="range"].studio-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: #4285F4;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+input[type="range"].studio-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.16);
+  background: #1A73E8;
+}
+
+input[type="range"].studio-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: #4285F4;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+}
+
+/* Custom thin scrollbars inside studio sidebars */
+.studio-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.studio-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.studio-scroll::-webkit-scrollbar-thumb {
+  background: rgba(95, 99, 104, 0.25);
+  border-radius: 9999px;
+}
+
+.dark .studio-scroll::-webkit-scrollbar-thumb {
+  background: rgba(154, 160, 166, 0.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

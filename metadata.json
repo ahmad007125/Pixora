@@ -1,0 +1,6 @@
+{
+  "name": "Pixora",
+  "description": "Private, browser-based all-in-one photo editing studio with non-destructive adjustments, cinematic filters, collage maker, AI background removal, and batch compression.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
