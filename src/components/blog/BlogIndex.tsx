@@ -12,7 +12,7 @@ function formatDate(iso: string): string {
 
 export function BlogIndex({ posts }: { posts: BlogPost[] }) {
   return (
-    <div className="mx-auto w-full max-w-[1080px] px-4 py-8 sm:pl-12 sm:pr-8 sm:py-12">
+    <div className="w-full max-w-[1080px] px-4 py-8 sm:pl-12 sm:pr-8 sm:py-12">
       <header className="max-w-2xl space-y-3">
         <p className="text-sm font-medium text-[#1A73E8] dark:text-[#8AB4F8]">Pixora Journal</p>
         <h1 className="font-display text-3xl font-bold tracking-tight text-[#202124] sm:text-4xl dark:text-[#F1F3F4]">
